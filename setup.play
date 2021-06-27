@@ -1,5 +1,15 @@
 - hosts: all
 
+  vars:
+    - packages:
+        - tmux
+        - gkrellm
+        - dnsutils
+        - mtr
+        - tcpdump
+        - htop
+        - atop
+
   tasks:
 
   - slurp: src=/etc/xdg/lxsession/LXDE-pi/autostart
@@ -47,9 +57,4 @@
           }
         }
 
-  - package: name={{item}}
-    loop:
-        - tmux
-        - gkrellm
-        - dnsutils
-        - mtr
+  - package: name={{packages}}
