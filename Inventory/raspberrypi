@@ -1,1 +1,2 @@
-raspberrypi
+#raspberrypi ansible_user=pi ansible_ssh_pass=pi ansible_become=true
+raspberrypi ansible_ssh_pass=pi

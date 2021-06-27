@@ -1,0 +1,55 @@
+- hosts: all
+
+  tasks:
+
+  - slurp: src=/etc/xdg/lxsession/LXDE-pi/autostart
+    register: global_autostart
+  - debug: msg="{{ global_autostart['content'] | b64decode }}"
+  - file:
+      state: directory
+      dest: /home/pi/.config/lxsession/LXDE-pi
+  - copy:
+      dest: /home/pi/.config/lxsession/LXDE-pi/autostart 
+      content: |
+        {{ global_autostart['content'] | b64decode }}
+        @gkrellm
+        @lxterminal
+
+  - slurp: src=/etc/xdg/lxpanel/LXDE-pi/panels/panel
+    register: global_panel
+  - debug: msg="{{ global_panel['content'] | b64decode }}"
+  - file:
+      state: directory
+      dest: /home/pi/.config/lxpanel/LXDE-pi/panels
+  - copy:
+      dest: /home/pi/.config/lxpanel/LXDE-pi/panels/panel
+      content: |
+        {{ global_panel['content'] | b64decode }}
+        Plugin {
+          type=space
+          Config {
+            Size=2
+          }
+        }
+        Plugin {
+          type=cputemp
+          Config {
+          }
+        }
+        Plugin {
+          type=space
+          Config {
+            Size=2
+          }
+        Plugin {
+          type=cpufreq
+          Config {
+          }
+        }
+
+  - package: name={{item}}
+    loop:
+        - tmux
+        - gkrellm
+        - dnsutils
+        - mtr
