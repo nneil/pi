@@ -58,3 +58,10 @@
         }
 
   - package: name={{packages}}
+
+  - blockinfile:
+      dest: /boot/config.txt
+      content: |
+        over_voltage=2
+        arm_freq=2000
+
